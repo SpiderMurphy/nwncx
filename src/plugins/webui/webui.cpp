@@ -74,20 +74,12 @@ void(__thiscall *CGuiMan__HandleMouseLButton)(void *pThis, int a1);
 // Server messages dispatcher
 int(__fastcall *CNWCMessage__HandleServerToPlayerMessage)(CNWMessage *pMessage, int edx, unsigned char *pData, int nLength);
 
-HWND(__cdecl *GetHWnd)();
-
 // Internals
 HWND *g_hWnd = (HWND *)0x0092DC28;
 HWND *g_hRenderWnd = (HWND *)0x0092DC2C;
 
-// X, Y mouse coordinates
-int mx, my;
-
 // Hinstance
 HINSTANCE hinstance;
-
-// Mouse hook address
-HHOOK MouseActionsHook;
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
