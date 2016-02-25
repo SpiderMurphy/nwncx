@@ -69,10 +69,6 @@ typedef BOOL(__stdcall *HOOK_GL_SWAPBUFFERS)(HDC, UINT);
 // Open GL swap buffers for custom rendering
 HOOK_GL_SWAPBUFFERS o_wglSwapLayerBuffers;
 
-
-// Tile radial hook
-void(*OriginalTileRadialMenu)();
-
 void(__thiscall *CGuiMan__HandleMouseLButton)(void *pThis, int a1);
 
 // Server messages dispatcher
@@ -105,7 +101,7 @@ PLUGININFO pluginInfo = {
 	"Web UI extender plugin for nwncx, check also nwnx webui for server implementation",
 	"Cyan",
 	"cyan@gmail.com",
-	"© 2016 cyan",
+	"Â© 2016 cyan",
 	"",
 	0		//not transient
 };
