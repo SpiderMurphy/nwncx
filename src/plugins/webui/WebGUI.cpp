@@ -1,5 +1,6 @@
 #include "WebGUI.h"
 
+
 // Init
 void WebGUI::Init(HWND *parent, string resources, string layoutfile) {
 	// Set renderer hwnd
@@ -150,7 +151,8 @@ void WebGUI::BindMethods() {
 	if (jsGlobal.IsObject()) {
 		// UI methods binding / app object
 		JSObject& ui = jsGlobal.ToObject();
-		ui.SetCustomMethod(WSLit("Close"), false);
+		ui.SetCustomMethod(WSLit(GUI_CALLBACK_CLOSE), false);
+		ui.SetCustomMethod(WSLit(GUI_CALLBACK_POSTMESSAGE), false);
 	}
 
 	// Bind dispatcher
@@ -207,8 +209,42 @@ int WebGUI::ExecGuiCmd(const char *buffer, int length) {
 // Global Method callback dispatcher
 void WebGUI::OnMethodCall(Awesomium::WebView *caller, unsigned int remoteObjectId, WebString const & methodName, Awesomium::JSArray const & args) {
 	// Check method
-	if (methodName.Compare(WSLit("Close")) == 0) {
+	if (methodName.Compare(WSLit(GUI_CALLBACK_CLOSE)) == 0) {
 		this->OnClose();
+	}
+	else if (methodName.Compare(WSLit(GUI_CALLBACK_POSTMESSAGE)) == 0) {
+		fprintf(logFile, "Post Message\n");
+
+		// Check args sze, the first element must be the remote widget id
+		if (args.size() > 0) {
+			JSValue id = args.At(0);
+
+			fprintf(logFile, "Post Message1\n");
+
+			// Widget id must be a string
+			if (id.IsString()) {
+				// Std string
+				string utf8 = ToString(id.ToString());
+
+				fprintf(logFile, "PostMessage 2 %s\n", utf8.c_str());
+
+				// NwMessage
+				CNWCMessage *message = g_pAppManager->ClientExoApp->GetNWCMessage();
+
+				// Create message
+				message->CreateWriteMessage(80, -1, 1);
+				message->WriteINT(3, 32);
+				message->WriteCExoString(CExoString(utf8.c_str()), 32);
+
+				unsigned char *data = NULL;
+				unsigned long size = 0;
+
+				message->GetWriteMessage(&data, &size);
+
+				// Send message to nwserver
+				message->SendPlayerToServerMessage(WEBUI_MAJOR_MESSAGE, WEBUI_MINOR_MESSAGE, data, size);
+			}
+		}
 	}
 }
 
