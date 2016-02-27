@@ -78,9 +78,6 @@ int(__fastcall *CNWCMessage__HandleServerToPlayerMessage)(CNWMessage *pMessage, 
 HWND *g_hWnd = (HWND *)0x0092DC28;
 HWND *g_hRenderWnd = (HWND *)0x0092DC2C;
 
-// Hinstance
-HINSTANCE hinstance;
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Plugin info / link
@@ -131,10 +128,6 @@ HGLRC hook_last_rc_created = NULL;
 FILE *logFile;
 char logFileName[] = "logs/nwncx_webui.txt";
 
-// Temp
-char *buttonText = "Webui";
-char *icon = "NWNX2";
-
 // UI interface
 WebGUI webui(logFile);
 
@@ -173,6 +166,7 @@ int OnPluginsLoaded(WPARAM wParam, LPARAM lParam)
 {
 	fprintf(logFile, "Plugins loaded\n");
 	HookEvent("NWClient/ExoApp/Initialized", OnClientLoaded);
+	webui.SetLogfile(logFile);
 	return 1;
 }
 
