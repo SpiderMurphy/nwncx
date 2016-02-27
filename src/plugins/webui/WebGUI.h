@@ -8,6 +8,8 @@
 #include <Awesomium\WebCore.h>
 #include <Awesomium\BitmapSurface.h>
 #include <Awesomium\STLHelpers.h>
+#include "nwnapi\nwnapi.h"
+#include "GUIMessages.h"
 
 #define MOUSE_EVENT_LDOWN  0
 #define MOUSE_EVENT_LUP	   1
@@ -16,6 +18,10 @@
 #define GUI_CMD_SHOW	1
 #define GUI_CMD_CLOSE	0
 #define GUI_CMD_DATA	2
+
+// Js Methods
+#define GUI_CALLBACK_CLOSE			"Close"
+#define	GUI_CALLBACK_POSTMESSAGE	"PostMessage"
 
 using namespace std;
 using namespace Awesomium;
@@ -75,6 +81,7 @@ public:
 	void SetResources(string resources) { this->resources = resources; }
 	void SetActive(bool active) { this->active = active; };
 	void SetHidden(bool hidden) { this->hidden = hidden; }
+	void SetLogfile(FILE *logfile) { this->logFile = logfile; }
 
 private:
 	// Js methods binding def
@@ -122,4 +129,3 @@ private:
 	void BindMethods();
 
 };
-
